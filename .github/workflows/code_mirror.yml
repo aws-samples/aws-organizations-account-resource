@@ -1,0 +1,19 @@
+name: Mirror to CC
+on: [push]
+jobs:
+  mirror-to-cc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - run: sudo apt update
+      - run: sudo apt install -y git openssh-client
+      - run: mkdir ~/.ssh 
+      - run: echo ${{ secrets.CODECOMMIT_SSH_PRIVATE_KEY }} | base64 -d > ~/.ssh/id_rsa
+      - run: chmod 700 ~/.ssh
+      - run: chmod 600 ~/.ssh/id_rsa
+      - run: ssh-keyscan -t rsa ${{ secrets.CODECOMMIT_ENDPOINT }} >> ~/.ssh/known_hosts
+      - run: git checkout ${{ secrets.CODECOMMIT_BRANCH}}
+      - run: 'git push --tags -f ssh://${{ secrets.CODECOMMIT_SSH_KEY_ID}}@${{ secrets.CODECOMMIT_ENDPOINT }}/v1/repos/${{ secrets.CODECOMMIT_REPOSITORY }} HEAD:${{ secrets.CODECOMMIT_BRANCH}}'
+      - run: 'git push -f ssh://${{ secrets.CODECOMMIT_SSH_KEY_ID}}@${{ secrets.CODECOMMIT_ENDPOINT }}/v1/repos/${{ secrets.CODECOMMIT_REPOSITORY }} HEAD:${{ secrets.CODECOMMIT_BRANCH}}'

@@ -1,0 +1,105 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License").
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+Description: Registers the latest version of the ProServe::Organizations::Account CloudFormation Resource
+
+Parameters:
+  SourceBucketName:
+    Type: String
+    Default: aws-enterprise-jumpstart
+  SourceBucketPrefix:
+    Type: String
+    Default: aws-organizations-account-resource/proserve-organizations-account-
+  Version:
+    Type: String
+    Default: v1.0.5
+Resources:
+  CfnLogAndMetricsDeliveryRole:
+    Type: AWS::IAM::Role
+    Properties:
+      MaxSessionDuration: 43200
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+              - resources.cloudformation.amazonaws.com
+          Action: sts:AssumeRole
+      Path: "/"
+      Policies:
+      - PolicyName: LogAndMetricsDeliveryRolePolicy
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:DescribeLogGroups
+            - logs:DescribeLogStreams
+            - logs:PutLogEvents
+            - cloudwatch:ListMetrics
+            - cloudwatch:PutMetricData
+            Resource: "*"
+  CfnResourceProviderExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      MaxSessionDuration: 8400
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: resources.cloudformation.amazonaws.com
+            Action: sts:AssumeRole
+      Path: "/"
+      Policies:
+        - PolicyName: ResourceTypePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                - "organizations:CreateAccount"
+                - "organizations:DescribeAccount"
+                - "organizations:DescribeCreateAccountStatus"
+                - "organizations:ListAccounts"
+                - "organizations:ListOrganizationalUnitsForParent"
+                - "organizations:ListParents"
+                - "organizations:ListRoots"
+                - "organizations:MoveAccount"
+                - "organizations:TagResource"
+                - "sns:Publish"
+                - "sts:AssumeRole"
+                Resource: "*"
+  CfnResourceLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: 
+      LogGroupName: ProServe-Organizations-Account
+      RetentionInDays: 30
+  OrganizationsAccountCfnResourceProvider:
+    Type: AWS::CloudFormation::ResourceVersion
+    Properties:
+      ExecutionRoleArn: !GetAtt CfnResourceProviderExecutionRole.Arn
+      SchemaHandlerPackage: !Sub s3://${SourceBucketName}/${SourceBucketPrefix}${Version}.zip
+      TypeName: ProServe::Organizations::Account
+      LoggingConfig:
+          LogGroupName: !Ref CfnResourceLogGroup
+          LogRoleArn: !GetAtt CfnLogAndMetricsDeliveryRole.Arn
+  CfnResourceProviderDefaultVersion:
+    Type: AWS::CloudFormation::ResourceDefaultVersion
+    Properties:
+      TypeName: ProServe::Organizations::Account
+      TypeVersionArn: !Ref OrganizationsAccountCfnResourceProvider

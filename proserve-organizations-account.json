@@ -1,0 +1,204 @@
+{
+    "typeName": "ProServe::Organizations::Account",
+    "description": "Resource Schema for ProServe::Organizations::Account",
+    "sourceUrl": "https://gitlab.aws.dev/aws-enterprise-jumpstart/aws-organizations-account-resource",
+    "typeConfiguration": {
+        "properties": {
+            "RoleArn": {
+                "$ref": "#/definitions/RoleArn"
+            }
+        },
+        "additionalProperties": false,
+        "required": []
+    },
+    "definitions": {
+        "RoleArn": {
+            "description": "Role ARN to be assumed in order to create the Account",
+            "type": "string"
+        },
+        "DeploymentAccountConfiguration": {
+            "description": "(Optional) A dedicated deployment account can be used to further enhance security. This configuration creates a second role within the newly created account. This role trusts the given deployment account, allowing users in the given deployment account to assume the role.",
+            "type": "object",
+            "properties": {
+                "AccountId": {
+                    "description": "Deployment Account Id",
+                    "type": "string",
+                    "minLength": 12,
+                    "maxLength": 12
+                },
+                "RoleName": {
+                    "description": "Deployment Role Name.",
+                    "type": "string",
+                    "default": "DeploymentAccountAccessRole",
+                    "minLength": 1,
+                    "maxLength": 256
+                },
+                "AWSManagedPolicyArns": {
+                    "description": "A List of AWS managed policy arn's to attach to the deployment account role",
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "insertionOrder": false,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "AccountId",
+                "AWSManagedPolicyArns"
+            ]
+        },
+        "Tag": {
+            "type": "object",
+            "properties": {
+                "Key": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                },
+                "Value": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "Key",
+                "Value"
+            ]
+        }
+    },
+    "properties": {
+        "AccountName": {
+            "description": "The friendly name of the member account.",
+            "type": "string"
+        },
+        "AccountEmail": {
+            "description": "The email address of the owner to assign to the new member account. This email address must not already be associated with another AWS account. You must use a valid email address to complete account creation. You can't access the root user of the account or remove an account that was created with an invalid email address.",
+            "type": "string"
+        },
+        "OrganizationalUnitId": {
+            "description": "The unique identifier (ID) of the root or organizational unit that you want to create the account in.",
+            "type" : "string"
+        },
+        "OrganizationAccountAccessRoleName": {
+            "description": "The name of an IAM role that AWS Organizations automatically preconfigures in the new member account. This role trusts the management account, allowing users in the management account to assume the role, as permitted by the management account administrator. The role has administrator permissions in the new member account.\n\nIf you don't specify this parameter, the role name defaults to `OrganizationAccountAccessRole`.",
+            "type": "string",
+            "default": "OrganizationAccountAccessRole"
+        },
+        "DeploymentAccountConfiguration": {
+            "$ref" : "#/definitions/DeploymentAccountConfiguration"
+        },
+        "Tags": {
+            "description": "One or more tags.",
+            "type": "array",
+            "insertionOrder": false,
+            "items": {
+                "$ref" : "#/definitions/Tag"
+            }
+        },
+        "NotificationTopicArn": {
+            "description": "The SNS topic ARN to which to publish failure reasons.",
+            "type": "string"
+        },
+        "AccountRequestId": {
+            "description": "The unique identifier (ID) of the account creation request.",
+            "type": "string"
+        },
+        "AccountId": {
+            "description": "The unique identifier (ID) of the account.",
+            "type": "string"  
+        }
+    },
+    "additionalProperties": false,
+    "taggable": true,
+    "required": [
+        "AccountName",
+        "AccountEmail",
+        "OrganizationalUnitId"
+    ],
+    "readOnlyProperties": [
+        "/properties/AccountId",
+        "/properties/AccountRequestId"
+    ],
+    "writeOnlyProperties": [
+        "/properties/NotificationTopicArn",
+        "/properties/OrganizationAccountAccessRoleName",
+        "/properties/DeploymentAccountConfiguration"
+    ],
+    "primaryIdentifier": [
+        "/properties/AccountId"
+    ],
+    "createOnlyProperties": [
+        "/properties/AccountName",
+        "/properties/AccountEmail",
+        "/properties/OrganizationAccountAccessRoleName",
+        "/properties/DeploymentAccountConfiguration"
+    ],
+    "handlers": {
+        "create": {
+            "permissions": [
+                "sts:AssumeRole",
+                "organizations:CreateAccount",
+                "organizations:MoveAccount",
+                "organizations:DescribeAccount",
+                "organizations:ListRoots",
+                "organizations:ListParents",
+                "organizations:ListAccounts",
+                "organizations:ListOrganizationalUnitsForParent",
+                "organizations:DescribeCreateAccountStatus",
+                "sns:Publish"
+            ]
+        },
+        "read": {
+            "permissions": [
+                "sts:AssumeRole",
+                "organizations:DescribeAccount",
+                "organizations:ListRoots",
+                "organizations:ListParents",
+                "organizations:ListAccounts",
+                "organizations:ListOrganizationalUnitsForParent",
+                "sns:Publish"
+            ]
+        },
+        "update": {
+            "permissions": [
+                "sts:AssumeRole",
+                "organizations:MoveAccount",
+                "organizations:DescribeAccount",
+                "organizations:ListRoots",
+                "organizations:ListParents",
+                "organizations:ListAccounts",
+                "organizations:ListOrganizationalUnitsForParent",
+                "organizations:TagResource",
+                "sns:Publish"
+            ]
+        },
+        "delete": {
+            "permissions": [
+                "sts:AssumeRole",
+                "organizations:MoveAccount",
+                "organizations:DescribeAccount",
+                "organizations:ListRoots",
+                "organizations:ListParents",
+                "organizations:ListAccounts",
+                "organizations:ListOrganizationalUnitsForParent",
+                "sns:Publish"
+            ]
+        },
+        "list": {
+            "permissions": [
+                "sts:AssumeRole",
+                "organizations:DescribeAccount",
+                "organizations:ListRoots",
+                "organizations:ListParents",
+                "organizations:ListAccounts",
+                "organizations:ListOrganizationalUnitsForParent",
+                "sns:Publish"
+            ]
+        }
+    }
+}

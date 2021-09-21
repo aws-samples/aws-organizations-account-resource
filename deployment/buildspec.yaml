@@ -1,0 +1,33 @@
+version: 0.2
+cache:
+  paths:
+  - '/root/.cache/pip/**/*'
+  - '/root/.m2/**/*'
+  - '/root/.gradle/caches/**/*'
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+      java: corretto8
+    commands:
+      - pip install cloudformation-cli-java-plugin cfn-flip
+  pre_build:
+    commands:
+    - echo "Building with Python - $(python --version)"
+    - echo "Building with Java - $(java -version)"
+  build:
+    commands:
+    - mvn package
+    - cfn submit --dry-run
+    - echo $(python deployment/extract_version.py)
+    - 'cp ${CFN_ZIP_PREFIX}.zip ${CFN_ZIP_PREFIX}-$(python deployment/extract_version.py).zip'
+    - 'cp quickstart/cfn-provider-registration.yaml .'
+  post_build:
+    commands:
+    - echo Build completed on $(date)
+artifacts:
+  files:
+  - cfn-provider-registration.yaml
+  - '*.zip'
+
+ 
