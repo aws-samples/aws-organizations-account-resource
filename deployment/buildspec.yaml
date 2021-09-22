@@ -19,6 +19,7 @@ phases:
     commands:
     - mvn package
     - cfn submit --dry-run
+    - python deployment/extract_version.py
     - echo $(python deployment/extract_version.py)
     - 'cp ${CFN_ZIP_PREFIX}.zip ${CFN_ZIP_PREFIX}-$(python deployment/extract_version.py).zip'
     - 'cp quickstart/cfn-provider-registration.yaml .'

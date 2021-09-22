@@ -67,7 +67,7 @@ Resources:
                 - "organizations:ListRoots"
                 - "organizations:MoveAccount"
                 - "organizations:TagResource"
-                - "organizations:ListTagsForResource",
+                - "organizations:ListTagsForResource"
                 - "sns:Publish"
                 - "sts:AssumeRole"
                 Resource: "*"
