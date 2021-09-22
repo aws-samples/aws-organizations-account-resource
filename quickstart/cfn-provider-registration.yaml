@@ -9,7 +9,7 @@ Parameters:
     Default: aws-organizations-account-resource/proserve-organizations-account-
   Version:
     Type: String
-    Default: v1.0.5
+    Default: v1.0.6
 Resources:
   CfnLogAndMetricsDeliveryRole:
     Type: AWS::IAM::Role
@@ -67,6 +67,7 @@ Resources:
                 - "organizations:ListRoots"
                 - "organizations:MoveAccount"
                 - "organizations:TagResource"
+                - "organizations:ListTagsForResource",
                 - "sns:Publish"
                 - "sts:AssumeRole"
                 Resource: "*"

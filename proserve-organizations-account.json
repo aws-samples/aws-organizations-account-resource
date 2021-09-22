@@ -150,6 +150,7 @@
                 "organizations:ListAccounts",
                 "organizations:ListOrganizationalUnitsForParent",
                 "organizations:DescribeCreateAccountStatus",
+                "organizations:ListTagsForResource",
                 "sns:Publish"
             ]
         },
@@ -161,6 +162,7 @@
                 "organizations:ListParents",
                 "organizations:ListAccounts",
                 "organizations:ListOrganizationalUnitsForParent",
+                "organizations:ListTagsForResource",
                 "sns:Publish"
             ]
         },
@@ -174,6 +176,7 @@
                 "organizations:ListAccounts",
                 "organizations:ListOrganizationalUnitsForParent",
                 "organizations:TagResource",
+                "organizations:ListTagsForResource",
                 "sns:Publish"
             ]
         },
@@ -186,6 +189,7 @@
                 "organizations:ListParents",
                 "organizations:ListAccounts",
                 "organizations:ListOrganizationalUnitsForParent",
+                "organizations:ListTagsForResource",
                 "sns:Publish"
             ]
         },
@@ -197,6 +201,7 @@
                 "organizations:ListParents",
                 "organizations:ListAccounts",
                 "organizations:ListOrganizationalUnitsForParent",
+                "organizations:ListTagsForResource",
                 "sns:Publish"
             ]
         }

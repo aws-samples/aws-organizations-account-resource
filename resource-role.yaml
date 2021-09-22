@@ -30,6 +30,7 @@ Resources:
                 - "organizations:ListOrganizationalUnitsForParent"
                 - "organizations:ListParents"
                 - "organizations:ListRoots"
+                - "organizations:ListTagsForResource"
                 - "organizations:MoveAccount"
                 - "organizations:TagResource"
                 - "sns:Publish"
