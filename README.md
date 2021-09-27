@@ -79,6 +79,8 @@ Account Vending Stacksets are **NOT** part of this resource provider.
 
 ## Hints
 
+* While code samples in this repository has been tested and believe it works well, as always, be sure to test it in your environment before using it in production!
+
 The RPDK will automatically generate the correct resource model from the schema whenever the project is built via Maven. You can also do this manually with the following command: `cfn generate`.
 
 > Please don't modify files under `target/generated-sources/rpdk`, as they will be automatically overwritten.
