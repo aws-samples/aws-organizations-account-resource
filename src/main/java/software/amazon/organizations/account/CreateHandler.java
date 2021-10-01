@@ -11,6 +11,8 @@ import software.amazon.cloudformation.proxy.*;
 import software.amazon.organizations.account.translator.Translator;
 import software.amazon.organizations.account.util.ClientBuilder;
 
+import java.util.concurrent.TimeUnit;
+
 
 public class CreateHandler extends BaseHandlerStd {
     private Logger logger;
@@ -37,7 +39,21 @@ public class CreateHandler extends BaseHandlerStd {
                             .initiate("ProServe-Organizations-Account::CreateAccount", _proxyClient, progress.getResourceModel(), progress.getCallbackContext())
                             .translateToServiceRequest(Translator::createCreateAccountRequest)
                             .makeServiceCall((modelRequest, proxyInvocation) -> {
-                                CreateAccountResponse response = proxyInvocation.injectCredentialsAndInvokeV2(modelRequest, proxyInvocation.client()::createAccount);
+                                CreateAccountResponse response = null;
+                                while (true) {
+                                    try {
+                                        response = proxyInvocation.injectCredentialsAndInvokeV2(modelRequest, proxyInvocation.client()::createAccount);
+                                        break;
+                                    } catch (ConcurrentModificationException e) {
+                                        logger.log(String.format("Retry: %s", e.getMessage()));
+                                        try {
+                                            TimeUnit.SECONDS.sleep(10);
+                                        } catch (InterruptedException ex) {
+                                            logger.log("Thread interrupted.");
+                                            ex.printStackTrace();
+                                        }
+                                    }
+                                }
                                 model.setAccountId(response.createAccountStatus().accountId());
                                 model.setAccountRequestId(response.createAccountStatus().id());
                                 return response;
