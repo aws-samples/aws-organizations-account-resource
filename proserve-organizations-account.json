@@ -143,12 +143,18 @@
                 "organizations:CreateAccount",
                 "organizations:MoveAccount",
                 "organizations:DescribeAccount",
+                "organizations:DescribeOrganization",
+                "organizations:DescribeOrganizationalUnit",
                 "organizations:ListRoots",
                 "organizations:ListParents",
+                "organizations:ListChildren",
                 "organizations:ListAccounts",
+                "organizations:ListAccountsForParent",
                 "organizations:ListOrganizationalUnitsForParent",
                 "organizations:DescribeCreateAccountStatus",
                 "organizations:ListTagsForResource",
+                "organizations:TagResource",
+                "organizations:UntagResource",
                 "sns:Publish"
             ]
         },
@@ -156,9 +162,13 @@
             "permissions": [
                 "sts:AssumeRole",
                 "organizations:DescribeAccount",
+                "organizations:DescribeOrganization",
+                "organizations:DescribeOrganizationalUnit",
                 "organizations:ListRoots",
                 "organizations:ListParents",
+                "organizations:ListChildren",
                 "organizations:ListAccounts",
+                "organizations:ListAccountsForParent",
                 "organizations:ListOrganizationalUnitsForParent",
                 "organizations:ListTagsForResource",
                 "sns:Publish"
@@ -167,13 +177,15 @@
         "update": {
             "permissions": [
                 "sts:AssumeRole",
-                "organizations:MoveAccount",
                 "organizations:DescribeAccount",
+                "organizations:DescribeOrganization",
+                "organizations:DescribeOrganizationalUnit",
                 "organizations:ListRoots",
                 "organizations:ListParents",
+                "organizations:ListChildren",
                 "organizations:ListAccounts",
+                "organizations:ListAccountsForParent",
                 "organizations:ListOrganizationalUnitsForParent",
-                "organizations:TagResource",
                 "organizations:ListTagsForResource",
                 "sns:Publish"
             ]
@@ -183,11 +195,17 @@
                 "sts:AssumeRole",
                 "organizations:MoveAccount",
                 "organizations:DescribeAccount",
+                "organizations:DescribeOrganization",
+                "organizations:DescribeOrganizationalUnit",
                 "organizations:ListRoots",
                 "organizations:ListParents",
+                "organizations:ListChildren",
                 "organizations:ListAccounts",
+                "organizations:ListAccountsForParent",
                 "organizations:ListOrganizationalUnitsForParent",
                 "organizations:ListTagsForResource",
+                "organizations:TagResource",
+                "organizations:UntagResource",
                 "sns:Publish"
             ]
         },
