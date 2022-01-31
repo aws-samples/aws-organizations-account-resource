@@ -34,6 +34,7 @@ public class CreateHandler extends BaseHandlerStd {
         ) : proxy;
         ProxyClient<OrganizationsClient> _proxyClient = _proxy.newProxy(ClientBuilder::getClient);
         return ProgressEvent.progress(request.getDesiredResourceState(), callbackContext)
+                .then(progress -> findAccount(proxy, proxyClient, progress, progress.getResourceModel(), logger))
                 .then(progress ->
                         _proxy
                             .initiate("ProServe-Organizations-Account::CreateAccount", _proxyClient, progress.getResourceModel(), progress.getCallbackContext())

@@ -173,9 +173,19 @@ public abstract class BaseHandlerStd extends BaseHandler<CallbackContext, TypeCo
                     final Iterable<ListAccountsResponse> iterable = proxyInvocation.injectCredentialsAndInvokeIterableV2(modelRequest, proxyInvocation.client()::listAccountsPaginator);
                     return findFirstAccount(iterable, model);
                 })
-                .done((request, response, client, _model, context) -> response == null ?
-                        ProgressEvent.progress(_model, context) :
-                        ProgressEvent.failed(_model, context, HandlerErrorCode.AlreadyExists, "Account with this email already exists"));
+                .done((request, response, client, _model, context) -> {
+                        if (response == null) {
+                            return ProgressEvent.progress(_model, context);
+                        } else {
+                            if (_model.getAccountEmail().compareTo(response.email()) == 0 && _model.getAccountName().compareTo(response.name()) == 0) {
+                                _model.setAccountId(response.id());
+                                return ProgressEvent.defaultSuccessHandler(_model);
+                            } else {
+                                return ProgressEvent.failed(_model, context, HandlerErrorCode.AlreadyExists, "Account with this email already exists, account name does not match");
+                            }
+                            // return ProgressEvent.failed(_model, context, HandlerErrorCode.AlreadyExists, "Account with this email already exists"));
+                        }
+                });
     }
 
     protected ProgressEvent<ResourceModel, CallbackContext> describeAccount(

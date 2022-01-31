@@ -133,8 +133,6 @@
         "/properties/AccountId"
     ],
     "createOnlyProperties": [
-        "/properties/AccountName",
-        "/properties/AccountEmail",
         "/properties/OrganizationAccountAccessRoleName",
         "/properties/DeploymentAccountConfiguration"
     ],
