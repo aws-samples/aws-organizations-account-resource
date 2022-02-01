@@ -1,5 +1,6 @@
 package software.amazon.organizations.account.util;
 
+import software.amazon.awssdk.core.exception.RetryableException;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.iam.IamClient;
 import software.amazon.awssdk.services.organizations.OrganizationsClient;
@@ -115,6 +116,7 @@ public class ClientBuilder {
             public boolean shouldRetry(RetryPolicyContext context) {
                 final String errorMessage = context.exception().getMessage();
                 if (StringUtils.isNullOrEmpty(errorMessage)) return false;
+                if (context.exception() instanceof RetryableException) return true;
                 return errorMessage.contains("Rate exceeded");
             }
         }
