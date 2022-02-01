@@ -36,7 +36,7 @@ public class CreateHandler extends BaseHandlerStd {
         return ProgressEvent.progress(request.getDesiredResourceState(), callbackContext)
                 .then(progress -> findAccount(_proxy, _proxyClient, progress, progress.getResourceModel(), logger))
                 .then(progress ->
-                        _proxy
+                        progress.getResourceModel().getAccountId() == null ? _proxy
                             .initiate("ProServe-Organizations-Account::CreateAccount", _proxyClient, progress.getResourceModel(), progress.getCallbackContext())
                             .translateToServiceRequest(Translator::createCreateAccountRequest)
                             .makeServiceCall((modelRequest, proxyInvocation) -> {
@@ -80,7 +80,7 @@ public class CreateHandler extends BaseHandlerStd {
                                 }
                                 throw e;
                             })
-                            .progress()
+                            .progress() : progress
                 )
                 .then(progress -> describeAccount(_proxy, _proxyClient, progress, progress.getResourceModel(), logger, callbackContext))
                 .then(progress -> getParentId(_proxy, _proxyClient, progress, progress.getResourceModel(), logger, callbackContext))

@@ -179,7 +179,7 @@ public abstract class BaseHandlerStd extends BaseHandler<CallbackContext, TypeCo
                         } else {
                             if (_model.getAccountEmail().compareTo(response.email()) == 0 && _model.getAccountName().compareTo(response.name()) == 0) {
                                 _model.setAccountId(response.id());
-                                return ProgressEvent.defaultSuccessHandler(_model);
+                                return ProgressEvent.progress(_model, context);
                             } else {
                                 return ProgressEvent.failed(_model, context, HandlerErrorCode.AlreadyExists, "Account with this email already exists, account name does not match");
                             }
