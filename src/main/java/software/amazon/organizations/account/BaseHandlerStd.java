@@ -293,7 +293,7 @@ public abstract class BaseHandlerStd extends BaseHandler<CallbackContext, TypeCo
                     String.format("arn:aws:iam::%s:role/%s", accountId, roleName)
             );
         } catch (StsException e) {
-            return ProgressEvent.defaultInProgressHandler(progress.getCallbackContext(), 5, model);
+            throw RetryableException.builder().message(e.getMessage()).build();
         }
         ProxyClient<IamClient> _proxyClient = _proxy.newProxy(ClientBuilder::getIamClient);
         return ProgressEvent.progress(model, progress.getCallbackContext())
