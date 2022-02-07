@@ -3,6 +3,7 @@ package software.amazon.organizations.account;
 import software.amazon.awssdk.awscore.AwsRequest;
 import software.amazon.awssdk.core.exception.RetryableException;
 import software.amazon.awssdk.services.account.AccountClient;
+import software.amazon.awssdk.services.account.model.ResourceNotFoundException;
 import software.amazon.awssdk.services.iam.IamClient;
 import software.amazon.awssdk.services.iam.model.CreateRoleResponse;
 import software.amazon.awssdk.services.iam.model.EntityAlreadyExistsException;
@@ -190,6 +191,12 @@ public abstract class BaseHandlerStd extends BaseHandler<CallbackContext, TypeCo
                 .translateToServiceRequest(_model -> createDeleteAlternateContactRequest(_model, type))
                 .backoffDelay(MULTIPLE_OF)
                 .makeServiceCall((modelRequest, proxyInvocation) -> proxyInvocation.injectCredentialsAndInvokeV2(modelRequest, proxyInvocation.client()::deleteAlternateContact))
+                .handleError((_request, e, _proxyClient, _model, context) -> {
+                    if (e instanceof ResourceNotFoundException) {
+                            return ProgressEvent.progress(_model, context);
+                    }
+                    throw e;
+                })
                 .progress();
     }
 
