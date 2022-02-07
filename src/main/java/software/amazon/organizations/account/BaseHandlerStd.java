@@ -328,14 +328,23 @@ public abstract class BaseHandlerStd extends BaseHandler<CallbackContext, TypeCo
         String accountId = progress.getCallbackContext().account.id();
         String roleName = model.getOrganizationAccountAccessRoleName() == null ? "OrganizationAccountAccessRole" : model.getOrganizationAccountAccessRoleName();
         AmazonWebServicesClientProxy _proxy;
-        try {
-            _proxy = retrieveCrossAccountProxy(
-                    proxy,
-                    (LoggerProxy) logger,
-                    String.format("arn:aws:iam::%s:role/%s", accountId, roleName)
-            );
-        } catch (StsException e) {
-            throw RetryableException.builder().message(e.getMessage()).build();
+        while (true) {
+            try {
+                _proxy = retrieveCrossAccountProxy(
+                        proxy,
+                        (LoggerProxy) logger,
+                        String.format("arn:aws:iam::%s:role/%s", accountId, roleName)
+                );
+                break;
+            } catch (StsException e) {
+                logger.log(String.format("Retry: %s", e.getMessage()));
+                try {
+                    TimeUnit.SECONDS.sleep(10);
+                } catch (InterruptedException ex) {
+                    logger.log("Thread interrupted.");
+                    ex.printStackTrace();
+                }
+            }
         }
         ProxyClient<IamClient> _proxyClient = _proxy.newProxy(ClientBuilder::getIamClient);
         return ProgressEvent.progress(model, progress.getCallbackContext())
