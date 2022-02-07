@@ -29,15 +29,15 @@ public class UpdateHandler extends BaseHandlerStd {
                 .then(progress -> getParentId(_proxy, _proxyClient, progress, progress.getResourceModel(), logger, callbackContext))
                 .then(progress -> moveAccount(_proxy, _proxyClient, progress, progress.getResourceModel(), logger, callbackContext, false))
                 .then(progress -> tagAccount(_proxy, _proxyClient, progress, progress.getResourceModel(), logger, callbackContext))
-                .then(progress -> model.getAlternateContacts().getBilling() != null ?
+                .then(progress -> model.getAlternateContacts() != null && model.getAlternateContacts().getBilling() != null ?
                         putAlternateContact(_proxy, _proxyAccountClient, progress, progress.getResourceModel(), "BILLING", logger, callbackContext) :
                         deleteAlternateContact(_proxy, _proxyAccountClient, progress, progress.getResourceModel(), "BILLING", logger, callbackContext)
                 )
-                .then(progress -> model.getAlternateContacts().getOperations() != null ?
+                .then(progress -> model.getAlternateContacts() != null && model.getAlternateContacts().getOperations() != null ?
                         putAlternateContact(_proxy, _proxyAccountClient, progress, progress.getResourceModel(), "OPERATIONS", logger, callbackContext) :
                         deleteAlternateContact(_proxy, _proxyAccountClient, progress, progress.getResourceModel(), "OPERATIONS", logger, callbackContext)
                 )
-                .then(progress -> model.getAlternateContacts().getSecurity() != null ?
+                .then(progress -> model.getAlternateContacts() != null && model.getAlternateContacts().getSecurity() != null ?
                         putAlternateContact(_proxy, _proxyAccountClient, progress, progress.getResourceModel(), "SECURITY", logger, callbackContext) :
                         deleteAlternateContact(_proxy, _proxyAccountClient, progress, progress.getResourceModel(), "SECURITY", logger, callbackContext)
                 )
