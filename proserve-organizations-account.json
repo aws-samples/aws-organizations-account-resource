@@ -213,6 +213,9 @@
                 "organizations:ListTagsForResource",
                 "organizations:TagResource",
                 "organizations:UntagResource",
+                "account:DeleteAlternateContact",
+                "account:GetAlternateContact",
+                "account:PutAlternateContact",
                 "sns:Publish"
             ]
         },
@@ -229,6 +232,7 @@
                 "organizations:ListAccountsForParent",
                 "organizations:ListOrganizationalUnitsForParent",
                 "organizations:ListTagsForResource",
+                "account:GetAlternateContact",
                 "sns:Publish"
             ]
         },
@@ -245,6 +249,9 @@
                 "organizations:ListAccountsForParent",
                 "organizations:ListOrganizationalUnitsForParent",
                 "organizations:ListTagsForResource",
+                "account:DeleteAlternateContact",
+                "account:GetAlternateContact",
+                "account:PutAlternateContact",
                 "sns:Publish"
             ]
         },
@@ -264,6 +271,9 @@
                 "organizations:ListTagsForResource",
                 "organizations:TagResource",
                 "organizations:UntagResource",
+                "account:DeleteAlternateContact",
+                "account:GetAlternateContact",
+                "account:PutAlternateContact",
                 "sns:Publish"
             ]
         },
@@ -276,6 +286,7 @@
                 "organizations:ListAccounts",
                 "organizations:ListOrganizationalUnitsForParent",
                 "organizations:ListTagsForResource",
+                "account:GetAlternateContact",
                 "sns:Publish"
             ]
         }

@@ -9,7 +9,7 @@ Parameters:
     Default: aws-organizations-account-resource/proserve-organizations-account-
   Version:
     Type: String
-    Default: v1.3.3
+    Default: v1.3.4
 Resources:
   CfnLogAndMetricsDeliveryRole:
     Type: AWS::IAM::Role
@@ -73,6 +73,9 @@ Resources:
                 - "organizations:TagResource"
                 - "organizations:UntagResource"
                 - "organizations:ListTagsForResource"
+                - "account:DeleteAlternateContact"
+                - "account:GetAlternateContact"
+                - "account:PutAlternateContact"
                 - "sns:Publish"
                 - "sts:AssumeRole"
                 Resource: "*"
