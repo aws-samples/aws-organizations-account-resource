@@ -2,6 +2,8 @@ package software.amazon.organizations.account;
 
 import software.amazon.awssdk.awscore.AwsRequest;
 import software.amazon.awssdk.core.exception.RetryableException;
+import software.amazon.awssdk.services.account.AccountClient;
+import software.amazon.awssdk.services.account.model.ResourceNotFoundException;
 import software.amazon.awssdk.services.iam.IamClient;
 import software.amazon.awssdk.services.iam.model.CreateRoleResponse;
 import software.amazon.awssdk.services.iam.model.EntityAlreadyExistsException;
@@ -158,6 +160,46 @@ public abstract class BaseHandlerStd extends BaseHandler<CallbackContext, TypeCo
                 .progress();
     }
 
+    protected ProgressEvent<ResourceModel, CallbackContext> putAlternateContact(
+            final AmazonWebServicesClientProxy proxy,
+            final ProxyClient<AccountClient> proxyClient,
+            final ProgressEvent<ResourceModel, CallbackContext> progress,
+            final ResourceModel model,
+            final String type,
+            final Logger logger,
+            final CallbackContext ctx
+    ) {
+        return proxy
+                .initiate("ProServe-Organizations-Account::PutContact-"+type, proxyClient, model, progress.getCallbackContext())
+                .translateToServiceRequest(_model -> createPutAlternateContactRequest(_model, type))
+                .backoffDelay(MULTIPLE_OF)
+                .makeServiceCall((modelRequest, proxyInvocation) -> proxyInvocation.injectCredentialsAndInvokeV2(modelRequest, proxyInvocation.client()::putAlternateContact))
+                .progress();
+    }
+
+    protected ProgressEvent<ResourceModel, CallbackContext> deleteAlternateContact(
+            final AmazonWebServicesClientProxy proxy,
+            final ProxyClient<AccountClient> proxyClient,
+            final ProgressEvent<ResourceModel, CallbackContext> progress,
+            final ResourceModel model,
+            final String type,
+            final Logger logger,
+            final CallbackContext ctx
+    ) {
+        return proxy
+                .initiate("ProServe-Organizations-Account::DeleteContact-"+type, proxyClient, model, progress.getCallbackContext())
+                .translateToServiceRequest(_model -> createDeleteAlternateContactRequest(_model, type))
+                .backoffDelay(MULTIPLE_OF)
+                .makeServiceCall((modelRequest, proxyInvocation) -> proxyInvocation.injectCredentialsAndInvokeV2(modelRequest, proxyInvocation.client()::deleteAlternateContact))
+                .handleError((_request, e, _proxyClient, _model, context) -> {
+                    if (e instanceof ResourceNotFoundException) {
+                            return ProgressEvent.progress(_model, context);
+                    }
+                    throw e;
+                })
+                .progress();
+    }
+
     protected ProgressEvent<ResourceModel, CallbackContext> findAccount(
             final AmazonWebServicesClientProxy proxy,
             final ProxyClient<OrganizationsClient> proxyClient,
@@ -285,16 +327,26 @@ public abstract class BaseHandlerStd extends BaseHandler<CallbackContext, TypeCo
     ) {
         String accountId = progress.getCallbackContext().account.id();
         String roleName = model.getOrganizationAccountAccessRoleName() == null ? "OrganizationAccountAccessRole" : model.getOrganizationAccountAccessRoleName();
-        AmazonWebServicesClientProxy _proxy;
-        try {
-            _proxy = retrieveCrossAccountProxy(
-                    proxy,
-                    (LoggerProxy) logger,
-                    String.format("arn:aws:iam::%s:role/%s", accountId, roleName)
-            );
-        } catch (StsException e) {
-            throw RetryableException.builder().message(e.getMessage()).build();
+        AmazonWebServicesClientProxy _proxy_attempt;
+        while (true) {
+            try {
+                _proxy_attempt = retrieveCrossAccountProxy(
+                        proxy,
+                        (LoggerProxy) logger,
+                        String.format("arn:aws:iam::%s:role/%s", accountId, roleName)
+                );
+                break;
+            } catch (StsException e) {
+                logger.log(String.format("Retry: %s", e.getMessage()));
+                try {
+                    TimeUnit.SECONDS.sleep(10);
+                } catch (InterruptedException ex) {
+                    logger.log("Thread interrupted.");
+                    ex.printStackTrace();
+                }
+            }
         }
+        AmazonWebServicesClientProxy _proxy = _proxy_attempt;
         ProxyClient<IamClient> _proxyClient = _proxy.newProxy(ClientBuilder::getIamClient);
         return ProgressEvent.progress(model, progress.getCallbackContext())
                 .then(_progress ->

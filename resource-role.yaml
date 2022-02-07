@@ -23,6 +23,9 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
+                - "account:DeleteAlternateContact"
+                - "account:GetAlternateContact"
+                - "account:PutAlternateContact"
                 - "organizations:CreateAccount"
                 - "organizations:DescribeAccount"
                 - "organizations:DescribeCreateAccountStatus"

@@ -2,6 +2,7 @@ package software.amazon.organizations.account.util;
 
 import software.amazon.awssdk.core.exception.RetryableException;
 import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.account.AccountClient;
 import software.amazon.awssdk.services.iam.IamClient;
 import software.amazon.awssdk.services.organizations.OrganizationsClient;
 import com.amazonaws.util.StringUtils;
@@ -14,6 +15,7 @@ import software.amazon.awssdk.core.retry.RetryPolicyContext;
 import software.amazon.awssdk.core.retry.backoff.BackoffStrategy;
 import software.amazon.awssdk.core.retry.conditions.OrRetryCondition;
 import software.amazon.awssdk.core.retry.conditions.RetryCondition;
+import software.amazon.awssdk.services.organizations.model.Account;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sts.StsClient;
 import software.amazon.cloudformation.LambdaWrapper;
@@ -33,6 +35,10 @@ public class ClientBuilder {
 
     public static SnsClient getSnsClient() {
         return LazyHolder.SNS_CLIENT;
+    }
+
+    public static AccountClient getAccountClient() {
+        return LazyHolder.ACCOUNT_CLIENT;
     }
 
     /**
@@ -87,6 +93,20 @@ public class ClientBuilder {
 
         public static SnsClient SNS_CLIENT = SnsClient.builder()
                 .httpClient(LambdaWrapper.HTTP_CLIENT)
+                .overrideConfiguration(ClientOverrideConfiguration.builder()
+                        .retryPolicy(RetryPolicy.builder()
+                                .backoffStrategy(BackoffStrategy.defaultThrottlingStrategy())
+                                .throttlingBackoffStrategy(BackoffStrategy.defaultThrottlingStrategy())
+                                .numRetries(MAX_RETRIES)
+                                .retryCondition(OrRetryCondition.create(RetryCondition.defaultRetryCondition(),
+                                        OrganizationsClientRetryCondition.create()))
+                                .build())
+                        .build())
+                .build();
+
+        public static AccountClient ACCOUNT_CLIENT = AccountClient.builder()
+                .httpClient(LambdaWrapper.HTTP_CLIENT)
+                .region(Region.US_EAST_1)
                 .overrideConfiguration(ClientOverrideConfiguration.builder()
                         .retryPolicy(RetryPolicy.builder()
                                 .backoffStrategy(BackoffStrategy.defaultThrottlingStrategy())

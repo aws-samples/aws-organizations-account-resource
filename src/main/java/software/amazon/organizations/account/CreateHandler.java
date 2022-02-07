@@ -2,6 +2,7 @@ package software.amazon.organizations.account;
 
 
 import software.amazon.awssdk.core.exception.RetryableException;
+import software.amazon.awssdk.services.account.AccountClient;
 import software.amazon.awssdk.services.organizations.OrganizationsClient;
 import software.amazon.awssdk.services.organizations.model.ConcurrentModificationException;
 import software.amazon.awssdk.services.organizations.model.CreateAccountFailureReason;
@@ -33,6 +34,7 @@ public class CreateHandler extends BaseHandlerStd {
                 typeConfiguration.getRoleArn()
         ) : proxy;
         ProxyClient<OrganizationsClient> _proxyClient = _proxy.newProxy(ClientBuilder::getClient);
+        ProxyClient<AccountClient> _proxyAccountClient = _proxy.newProxy(ClientBuilder::getAccountClient);
         return ProgressEvent.progress(request.getDesiredResourceState(), callbackContext)
                 .then(progress -> findAccount(_proxy, _proxyClient, progress, progress.getResourceModel(), logger))
                 .then(progress ->
@@ -89,6 +91,18 @@ public class CreateHandler extends BaseHandlerStd {
                         model.getDeploymentAccountConfiguration() != null ?
                                 createDeploymentAccountRole(_proxy, _proxyClient, progress, progress.getResourceModel(), logger) :
                                 ProgressEvent.defaultInProgressHandler(progress.getCallbackContext(), 0, progress.getResourceModel())
+                )
+                .then(progress -> model.getAlternateContacts() != null && model.getAlternateContacts().getBilling() != null ?
+                        putAlternateContact(_proxy, _proxyAccountClient, progress, progress.getResourceModel(), "BILLING", logger, callbackContext) :
+                        ProgressEvent.defaultInProgressHandler(progress.getCallbackContext(), 0, progress.getResourceModel())
+                )
+                .then(progress -> model.getAlternateContacts() != null && model.getAlternateContacts().getOperations() != null ?
+                        putAlternateContact(_proxy, _proxyAccountClient, progress, progress.getResourceModel(), "OPERATIONS", logger, callbackContext) :
+                        ProgressEvent.defaultInProgressHandler(progress.getCallbackContext(), 0, progress.getResourceModel())
+                )
+                .then(progress -> model.getAlternateContacts() != null && model.getAlternateContacts().getSecurity() != null ?
+                        putAlternateContact(_proxy, _proxyAccountClient, progress, progress.getResourceModel(), "SECURITY", logger, callbackContext) :
+                        ProgressEvent.defaultInProgressHandler(progress.getCallbackContext(), 0, progress.getResourceModel())
                 )
                 .then(progress -> {
                     CallbackContext ctx = progress.getCallbackContext();

@@ -19,8 +19,8 @@ Simple Example:
 Account:
   Type: ProServe::Organizations::Account
   Properties:
-    AccountName: f3ddb23235a8d1ff-test,
-    AccountEmail: f3ddb23235a8d1ff-test@my-corp.com,
+    AccountName: f3ddb23235a8d1ff-test
+    AccountEmail: f3ddb23235a8d1ff-test@my-corp.com
     OrganizationalUnitId: ou-abcd-12345678
 
 Outputs:
@@ -33,9 +33,25 @@ Example with dedicated deployment account access role and cost center tag:
 Account:
   Type: ProServe::Organizations::Account
   Properties:
-    AccountName: f3ddb23235a8d1ff-test,
-    AccountEmail: f3ddb23235a8d1ff-test@my-corp.com,
+    AccountName: f3ddb23235a8d1ff-test
+    AccountEmail: f3ddb23235a8d1ff-test@my-corp.com
     OrganizationalUnitId: ou-abcd-12345678
+    AlternateContacts:
+      Billing:
+        Email: f3ddb23235a8d1ff-billing@my-corp.com
+        Name: John Doe
+        PhoneNumber: 123-456-7890
+        Title: Billing Dep
+      Operations:
+        Email: f3ddb23235a8d1ff-ops@my-corp.com
+        Name: John Doe
+        PhoneNumber: 123-456-7890
+        Title: Ops Center
+      Security:
+        Email: f3ddb23235a8d1ff-sec@my-corp.com
+        Name: John Doe
+        PhoneNumber: 123-456-7890
+        Title: Security Officer
     DeploymentAccountConfiguration:
       AccountId: 123456789012
       RoleName: DeploymentAccountAccessRole
@@ -51,6 +67,8 @@ Outputs:
   AccountReqId:
     Value: !GetAtt Account.AccountRequestId
 ```
+
+Before you can update the alternate contact information for an AWS account that is managed by AWS Organizations, you must first enable integration between AWS Account Management and Organizations. For more information, see [Enabling trusted access for AWS Account Management](https://docs.aws.amazon.com/accounts/latest/reference/using-orgs-trusted-access.html).
 
 
 ## Quickstart
