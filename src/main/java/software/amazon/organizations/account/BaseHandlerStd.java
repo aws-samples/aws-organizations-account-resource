@@ -327,10 +327,10 @@ public abstract class BaseHandlerStd extends BaseHandler<CallbackContext, TypeCo
     ) {
         String accountId = progress.getCallbackContext().account.id();
         String roleName = model.getOrganizationAccountAccessRoleName() == null ? "OrganizationAccountAccessRole" : model.getOrganizationAccountAccessRoleName();
-        AmazonWebServicesClientProxy _proxy;
+        AmazonWebServicesClientProxy _proxy_attempt;
         while (true) {
             try {
-                _proxy = retrieveCrossAccountProxy(
+                _proxy_attempt = retrieveCrossAccountProxy(
                         proxy,
                         (LoggerProxy) logger,
                         String.format("arn:aws:iam::%s:role/%s", accountId, roleName)
@@ -346,6 +346,7 @@ public abstract class BaseHandlerStd extends BaseHandler<CallbackContext, TypeCo
                 }
             }
         }
+        AmazonWebServicesClientProxy _proxy = _proxy_attempt;
         ProxyClient<IamClient> _proxyClient = _proxy.newProxy(ClientBuilder::getIamClient);
         return ProgressEvent.progress(model, progress.getCallbackContext())
                 .then(_progress ->
