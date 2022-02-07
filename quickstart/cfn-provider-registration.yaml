@@ -9,7 +9,7 @@ Parameters:
     Default: aws-organizations-account-resource/proserve-organizations-account-
   Version:
     Type: String
-    Default: v1.3.1
+    Default: v1.3.3
 Resources:
   CfnLogAndMetricsDeliveryRole:
     Type: AWS::IAM::Role

@@ -106,6 +106,7 @@ public class ClientBuilder {
 
         public static AccountClient ACCOUNT_CLIENT = AccountClient.builder()
                 .httpClient(LambdaWrapper.HTTP_CLIENT)
+                .region(Region.US_EAST_1)
                 .overrideConfiguration(ClientOverrideConfiguration.builder()
                         .retryPolicy(RetryPolicy.builder()
                                 .backoffStrategy(BackoffStrategy.defaultThrottlingStrategy())
