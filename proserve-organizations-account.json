@@ -75,25 +75,27 @@
                     "description": "Contacts email address",
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 12
+                    "maxLength": 64,
+                    "pattern": "[\\w+=,.-]+@[\\w.-]+\\.[\\w]+"
                 },
                 "Name": {
                     "description": "Contacts name",
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 12
+                    "maxLength": 64
                 },
                 "PhoneNumber": {
                     "description": "Contacts phone number",
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 12
+                    "maxLength": 25,
+                    "pattern": "^[\\s0-9()+-]+$"
                 },
                 "Title": {
                     "description": "Contacts title",
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 12
+                    "maxLength": 50
                 }
             },
             "required": [

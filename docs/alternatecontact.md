@@ -38,7 +38,9 @@ _Type_: String
 
 _Minimum_: <code>1</code>
 
-_Maximum_: <code>12</code>
+_Maximum_: <code>64</code>
+
+_Pattern_: <code>[\w+=,.-]+@[\w.-]+\.[\w]+</code>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -52,7 +54,7 @@ _Type_: String
 
 _Minimum_: <code>1</code>
 
-_Maximum_: <code>12</code>
+_Maximum_: <code>64</code>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -66,7 +68,9 @@ _Type_: String
 
 _Minimum_: <code>1</code>
 
-_Maximum_: <code>12</code>
+_Maximum_: <code>25</code>
+
+_Pattern_: <code>^[\s0-9()+-]+$</code>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -80,7 +84,7 @@ _Type_: String
 
 _Minimum_: <code>1</code>
 
-_Maximum_: <code>12</code>
+_Maximum_: <code>50</code>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
