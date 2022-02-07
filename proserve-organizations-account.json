@@ -50,6 +50,59 @@
                 "AWSManagedPolicyArns"
             ]
         },
+        "AlternateContacts": {
+            "description": "(Optional) Alternate contacts to be set",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "Billing": {
+                    "$ref": "#/definitions/AlternateContact"
+                },
+                "Operations": {
+                    "$ref": "#/definitions/AlternateContact"
+                },
+                "Security": {
+                    "$ref": "#/definitions/AlternateContact"
+                }
+            }
+        },
+        "AlternateContact": {
+            "description": "Alternate contact to be set",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "Email": {
+                    "description": "Contacts email address",
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 12
+                },
+                "Name": {
+                    "description": "Contacts name",
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 12
+                },
+                "PhoneNumber": {
+                    "description": "Contacts phone number",
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 12
+                },
+                "Title": {
+                    "description": "Contacts title",
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 12
+                }
+            },
+            "required": [
+                "Email",
+                "Name",
+                "PhoneNumber",
+                "Title"
+            ]
+        },
         "Tag": {
             "type": "object",
             "properties": {
@@ -83,6 +136,9 @@
         "OrganizationalUnitId": {
             "description": "The unique identifier (ID) of the root or organizational unit that you want to create the account in.",
             "type" : "string"
+        },
+        "AlternateContacts": {
+            "$ref": "#/definitions/AlternateContacts"
         },
         "OrganizationAccountAccessRoleName": {
             "description": "The name of an IAM role that AWS Organizations automatically preconfigures in the new member account. This role trusts the management account, allowing users in the management account to assume the role, as permitted by the management account administrator. The role has administrator permissions in the new member account.\n\nIf you don't specify this parameter, the role name defaults to `OrganizationAccountAccessRole`.",

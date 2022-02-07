@@ -3,11 +3,15 @@ package software.amazon.organizations.account.translator;
 import com.google.common.collect.Lists;
 import software.amazon.awssdk.awscore.AwsRequest;
 import software.amazon.awssdk.awscore.AwsResponse;
+import software.amazon.awssdk.services.account.model.DeleteAlternateContactRequest;
+import software.amazon.awssdk.services.account.model.GetAlternateContactRequest;
+import software.amazon.awssdk.services.account.model.PutAlternateContactRequest;
 import software.amazon.awssdk.services.iam.model.AttachRolePolicyRequest;
 import software.amazon.awssdk.services.iam.model.CreateRoleRequest;
 import software.amazon.awssdk.services.organizations.model.*;
 import software.amazon.awssdk.services.sns.model.PublishRequest;
 import software.amazon.awssdk.services.sts.model.AssumeRoleRequest;
+import software.amazon.organizations.account.AlternateContact;
 import software.amazon.organizations.account.DeploymentAccountConfiguration;
 import software.amazon.organizations.account.ResourceModel;
 
@@ -43,6 +47,41 @@ public class Translator {
     return DescribeAccountRequest
             .builder()
             .accountId(model.getAccountId())
+            .build();
+  }
+
+  public static PutAlternateContactRequest createPutAlternateContactRequest(final ResourceModel model, final String type) {
+    AlternateContact c = null;
+    switch (type) {
+      case "BILLING": c = model.getAlternateContacts().getBilling(); break;
+      case "OPERATIONS": c = model.getAlternateContacts().getOperations(); break;
+      case "SECURITY": c = model.getAlternateContacts().getSecurity(); break;
+    }
+
+    return PutAlternateContactRequest
+            .builder()
+            .accountId(model.getAccountId())
+            .alternateContactType(type)
+            .emailAddress(c.getEmail())
+            .name(c.getName())
+            .phoneNumber(c.getPhoneNumber())
+            .title(c.getTitle())
+            .build();
+  }
+
+  public static GetAlternateContactRequest createGetAlternateContactRequest(final ResourceModel model, final String type) {
+    return GetAlternateContactRequest
+            .builder()
+            .accountId(model.getAccountId())
+            .alternateContactType(type)
+            .build();
+  }
+
+  public static DeleteAlternateContactRequest createDeleteAlternateContactRequest(final ResourceModel model, final String type) {
+    return DeleteAlternateContactRequest
+            .builder()
+            .accountId(model.getAccountId())
+            .alternateContactType(type)
             .build();
   }
 

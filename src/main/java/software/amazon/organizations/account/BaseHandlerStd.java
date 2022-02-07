@@ -2,6 +2,7 @@ package software.amazon.organizations.account;
 
 import software.amazon.awssdk.awscore.AwsRequest;
 import software.amazon.awssdk.core.exception.RetryableException;
+import software.amazon.awssdk.services.account.AccountClient;
 import software.amazon.awssdk.services.iam.IamClient;
 import software.amazon.awssdk.services.iam.model.CreateRoleResponse;
 import software.amazon.awssdk.services.iam.model.EntityAlreadyExistsException;
@@ -155,6 +156,40 @@ public abstract class BaseHandlerStd extends BaseHandler<CallbackContext, TypeCo
                 .backoffDelay(MULTIPLE_OF)
                 .makeServiceCall((modelRequest, proxyInvocation) -> proxyInvocation.injectCredentialsAndInvokeV2(modelRequest, proxyInvocation.client()::tagResource))
                 .retryErrorFilter(this::filterException)
+                .progress();
+    }
+
+    protected ProgressEvent<ResourceModel, CallbackContext> putAlternateContact(
+            final AmazonWebServicesClientProxy proxy,
+            final ProxyClient<AccountClient> proxyClient,
+            final ProgressEvent<ResourceModel, CallbackContext> progress,
+            final ResourceModel model,
+            final String type,
+            final Logger logger,
+            final CallbackContext ctx
+    ) {
+        return proxy
+                .initiate("ProServe-Organizations-Account::PutContact-"+type, proxyClient, model, progress.getCallbackContext())
+                .translateToServiceRequest(_model -> createPutAlternateContactRequest(_model, type))
+                .backoffDelay(MULTIPLE_OF)
+                .makeServiceCall((modelRequest, proxyInvocation) -> proxyInvocation.injectCredentialsAndInvokeV2(modelRequest, proxyInvocation.client()::putAlternateContact))
+                .progress();
+    }
+
+    protected ProgressEvent<ResourceModel, CallbackContext> deleteAlternateContact(
+            final AmazonWebServicesClientProxy proxy,
+            final ProxyClient<AccountClient> proxyClient,
+            final ProgressEvent<ResourceModel, CallbackContext> progress,
+            final ResourceModel model,
+            final String type,
+            final Logger logger,
+            final CallbackContext ctx
+    ) {
+        return proxy
+                .initiate("ProServe-Organizations-Account::DeleteContact-"+type, proxyClient, model, progress.getCallbackContext())
+                .translateToServiceRequest(_model -> createDeleteAlternateContactRequest(_model, type))
+                .backoffDelay(MULTIPLE_OF)
+                .makeServiceCall((modelRequest, proxyInvocation) -> proxyInvocation.injectCredentialsAndInvokeV2(modelRequest, proxyInvocation.client()::deleteAlternateContact))
                 .progress();
     }
 

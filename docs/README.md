@@ -15,6 +15,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#accountname" title="AccountName">AccountName</a>" : <i>String</i>,
         "<a href="#accountemail" title="AccountEmail">AccountEmail</a>" : <i>String</i>,
         "<a href="#organizationalunitid" title="OrganizationalUnitId">OrganizationalUnitId</a>" : <i>String</i>,
+        "<a href="#alternatecontacts" title="AlternateContacts">AlternateContacts</a>" : <i><a href="alternatecontacts.md">AlternateContacts</a></i>,
         "<a href="#organizationaccountaccessrolename" title="OrganizationAccountAccessRoleName">OrganizationAccountAccessRoleName</a>" : <i>String</i>,
         "<a href="#deploymentaccountconfiguration" title="DeploymentAccountConfiguration">DeploymentAccountConfiguration</a>" : <i><a href="deploymentaccountconfiguration.md">DeploymentAccountConfiguration</a></i>,
         "<a href="#tags" title="Tags">Tags</a>" : <i>[ <a href="tag.md">Tag</a>, ... ]</i>,
@@ -31,6 +32,7 @@ Properties:
     <a href="#accountname" title="AccountName">AccountName</a>: <i>String</i>
     <a href="#accountemail" title="AccountEmail">AccountEmail</a>: <i>String</i>
     <a href="#organizationalunitid" title="OrganizationalUnitId">OrganizationalUnitId</a>: <i>String</i>
+    <a href="#alternatecontacts" title="AlternateContacts">AlternateContacts</a>: <i><a href="alternatecontacts.md">AlternateContacts</a></i>
     <a href="#organizationaccountaccessrolename" title="OrganizationAccountAccessRoleName">OrganizationAccountAccessRoleName</a>: <i>String</i>
     <a href="#deploymentaccountconfiguration" title="DeploymentAccountConfiguration">DeploymentAccountConfiguration</a>: <i><a href="deploymentaccountconfiguration.md">DeploymentAccountConfiguration</a></i>
     <a href="#tags" title="Tags">Tags</a>: <i>
@@ -67,6 +69,16 @@ The unique identifier (ID) of the root or organizational unit that you want to c
 _Required_: Yes
 
 _Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### AlternateContacts
+
+(Optional) Alternate contacts to be set
+
+_Required_: No
+
+_Type_: <a href="alternatecontacts.md">AlternateContacts</a>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
