@@ -20,6 +20,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#deploymentaccountconfiguration" title="DeploymentAccountConfiguration">DeploymentAccountConfiguration</a>" : <i><a href="deploymentaccountconfiguration.md">DeploymentAccountConfiguration</a></i>,
         "<a href="#tags" title="Tags">Tags</a>" : <i>[ <a href="tag.md">Tag</a>, ... ]</i>,
         "<a href="#notificationtopicarn" title="NotificationTopicArn">NotificationTopicArn</a>" : <i>String</i>,
+        "<a href="#closeaccountondeletion" title="CloseAccountOnDeletion">CloseAccountOnDeletion</a>" : <i>Boolean</i>
     }
 }
 </pre>
@@ -38,6 +39,7 @@ Properties:
     <a href="#tags" title="Tags">Tags</a>: <i>
       - <a href="tag.md">Tag</a></i>
     <a href="#notificationtopicarn" title="NotificationTopicArn">NotificationTopicArn</a>: <i>String</i>
+    <a href="#closeaccountondeletion" title="CloseAccountOnDeletion">CloseAccountOnDeletion</a>: <i>Boolean</i>
 </pre>
 
 ## Properties
@@ -121,6 +123,16 @@ The SNS topic ARN to which to publish failure reasons.
 _Required_: No
 
 _Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### CloseAccountOnDeletion
+
+If set to true account will be closed by AWS CloudFormation. Otherwise, just parked in root organizational unit.
+
+_Required_: No
+
+_Type_: Boolean
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

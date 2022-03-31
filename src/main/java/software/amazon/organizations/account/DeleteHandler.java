@@ -27,6 +27,7 @@ public class DeleteHandler extends BaseHandlerStd {
                 .then(progress -> getParentId(_proxy, _proxyClient, progress, progress.getResourceModel(), logger, callbackContext))
                 .then(progress -> getRootId(_proxy, _proxyClient, progress, progress.getResourceModel(), logger, callbackContext))
                 .then(progress -> moveAccount(_proxy, _proxyClient, progress, progress.getResourceModel(), logger, callbackContext, true))
+                .then(progress -> progress.getResourceModel().getCloseAccountOnDeletion() != null && progress.getResourceModel().getCloseAccountOnDeletion() ? closeAccount(_proxy, _proxyClient, progress, progress.getResourceModel(), logger, callbackContext) : progress)
                 .then(progress -> ProgressEvent.defaultSuccessHandler(progress.getResourceModel()));
     }
 }

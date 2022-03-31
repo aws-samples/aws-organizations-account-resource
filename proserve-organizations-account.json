@@ -169,6 +169,10 @@
         "AccountId": {
             "description": "The unique identifier (ID) of the account.",
             "type": "string"  
+        },
+        "CloseAccountOnDeletion": {
+            "description": "If set to true account will be closed by AWS CloudFormation. Otherwise, just parked in root organizational unit.",
+            "type": "boolean"
         }
     },
     "additionalProperties": false,
