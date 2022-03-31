@@ -73,6 +73,7 @@ Resources:
                 - "organizations:TagResource"
                 - "organizations:UntagResource"
                 - "organizations:ListTagsForResource"
+                - "organizations:CloseAccount"
                 - "account:DeleteAlternateContact"
                 - "account:GetAlternateContact"
                 - "account:PutAlternateContact"
