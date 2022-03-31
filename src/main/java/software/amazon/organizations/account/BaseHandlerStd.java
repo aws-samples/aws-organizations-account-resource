@@ -200,6 +200,22 @@ public abstract class BaseHandlerStd extends BaseHandler<CallbackContext, TypeCo
                 .progress();
     }
 
+    protected ProgressEvent<ResourceModel, CallbackContext> closeAccount(
+            final AmazonWebServicesClientProxy proxy,
+            final ProxyClient<OrganizationsClient> proxyClient,
+            final ProgressEvent<ResourceModel, CallbackContext> progress,
+            final ResourceModel model,
+            final Logger logger,
+            final CallbackContext ctx
+    ) {
+        return proxy
+                .initiate("ProServe-Organizations-Account::CloseAccount", proxyClient, model, progress.getCallbackContext())
+                .translateToServiceRequest(Translator::createCloseAccountRequest)
+                .backoffDelay(MULTIPLE_OF)
+                .makeServiceCall((modelRequest, proxyInvocation) -> proxyInvocation.injectCredentialsAndInvokeV2(modelRequest, proxyInvocation.client()::closeAccount))
+                .progress();
+    }
+
     protected ProgressEvent<ResourceModel, CallbackContext> findAccount(
             final AmazonWebServicesClientProxy proxy,
             final ProxyClient<OrganizationsClient> proxyClient,

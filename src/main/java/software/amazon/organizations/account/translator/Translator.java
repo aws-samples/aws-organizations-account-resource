@@ -145,6 +145,13 @@ public class Translator {
             .build();
   }
 
+  public static CloseAccountRequest createCloseAccountRequest(final ResourceModel model) {
+    return CloseAccountRequest
+            .builder()
+            .accountId(model.getAccountId())
+            .build();
+  }
+
   public static DescribeCreateAccountStatusRequest createCreateAccountStatusRequest(final String resourceId) {
     return DescribeCreateAccountStatusRequest
             .builder()
