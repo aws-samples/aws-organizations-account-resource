@@ -28,7 +28,7 @@ Outputs:
     Value: !Ref Account
 ```
 
-Example with dedicated deployment account access role and cost center tag:
+Example with dedicated deployment account access role and cost center tag. Additionally, it will actually **close** the AWS Account automatically on deletion in AWS CloudFormation:
 ```yaml
 Account:
   Type: ProServe::Organizations::Account
@@ -57,6 +57,7 @@ Account:
       RoleName: DeploymentAccountAccessRole
       AWSManagedPolicyArns:
       - arn:aws:iam::aws:policy/AdministratorAccess
+    CloseAccountOnDeletion: true
     Tags:
     - Key: mycorp:CostCenter
       Value: ABC123
