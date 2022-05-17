@@ -1,3 +1,6 @@
+**repository _moved_, maintained elsewhere -> https://github.com/curlim/aws-organizations-account-resource**
+
+
 # Concurrent Cross-Account Account Vending Cloudformation Resource Provider
 
 This AWS CloudFormation resource provider implements the concurrent creation of new Accounts using the AWS Organizations API.
